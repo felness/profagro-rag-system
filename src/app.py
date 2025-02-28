@@ -5,33 +5,39 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_gigachat.chat_models import GigaChat
 from langchain_core.output_parsers import StrOutputParser
 import os
+import sys  
+# Добавление пути к родительскому каталогу в sys.path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-load_dotenv(find_dotenv())
-api_key = os.getenv('GigaChat_API_key')
+from retriever.rag import create_llm_chain
+
+
+
+MAX_HISTORY_LENGTH = 3
+
+
 
 if 'chat_history' not in st.session_state:
     st.session_state.chat_history = []
     
 st.set_page_config(page_title="Streaming Bot", page_icon='🤖')
 
-st.title('ProfAgro Bot')
+st.title('assistant')
+
 # get response
 def get_response(query, chat_history):
-    template = """
-    Ты ассистент. Ответь на вопрос представленный ниже.
     
-    Chat_history:{chat_history}
+    limited_history = chat_history[-MAX_HISTORY_LENGTH:]
     
-    User Query: {question}
-    """
-    prompt = ChatPromptTemplate.from_template(template=template)
-    llm = GigaChat(verify_ssl_certs=False, credentials=api_key)
+    chain = create_llm_chain()
     
-    chain = (prompt | llm | StrOutputParser())
+    history_str = "\n".join([f"{msg.role}: {msg.content}" for msg in limited_history])
+    
     return chain.invoke({
-        'chat_history' : chat_history,
-        'question' : query
+        'query' : query,
+        'chat_history' : limited_history
     })
+    
 # conversation
 for message in  st.session_state.chat_history:
     if isinstance(message, HumanMessage):
