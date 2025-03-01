@@ -17,6 +17,8 @@
 
 Чтобы установить и запустить проект, выполните следующие шаги:
 
+# В случае когда нет возможности использовать Docker:
+
 1. Клонируйте репозиторий:
    ```bash
    git clone https://github.com/feelness/profagro-rag-system.git
@@ -26,13 +28,18 @@
     ```python
     pip install -r requirements.txt
 
-3. (Важно!)Настройка конфигурации: Создайте файл .env в корне проекта и добавьте необходимые API ключи для используемых сервисов:
- jina_ai_api_key
- GigaChat_API_key
+3. (Важно!)
+ Настройка конфигурации:
+ Создайте файл .env в корне проекта и добавьте необходимые API ключи для используемых сервисов:
+   ```python
+   jina_ai_api_key=your_jina_api_key
+   gigachat_api_key=your_gigachat_api_key
 
-4. Запуск проекта:
- ```python
- streamlit run  src/app.py только (через src/app.py)
+
+5. Запуск проекта:
+   ```python
+   streamlit run  src/app.py
+только (через src/app.py)
 
 
 
