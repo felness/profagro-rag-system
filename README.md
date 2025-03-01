@@ -36,11 +36,22 @@
    gigachat_api_key=your_gigachat_api_key
 
 
-5. Запуск проекта:
+4. Запуск проекта:
    ```python
    streamlit run  src/app.py
 только (через src/app.py)
 
+# Используя Docker
+В корне проекта приложен Docker файла для вашего удобства
+
+Как собрать:
+   ```python
+     docker build -t profagro-rag-system .
+     docker run -p 8501:8501 --env-file .env profagro-rag-system
+   
+
+
+  
 
 
 
