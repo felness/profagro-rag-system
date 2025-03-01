@@ -31,6 +31,7 @@
  GigaChat_API_key
 
 4. Запуск проекта:
+ ```python
  streamlit run  src/app.py только (через src/app.py)
 
 
