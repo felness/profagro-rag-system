@@ -44,23 +44,53 @@ class JinaEmbedding(Embeddings):
             return []
         
     def embed_query(self, text):
-        return self.embed_documents([text])[0]
+        if not text.strip():  
+            print("Ошибка: пустой текст, не могу обработать.")
+            return None
+
+        embeddings = self.embed_documents([text])
+        if not embeddings:
+            print("Ошибка: полученные эмбеддинги пустые.")
+            return None
+        
+        return embeddings[0]  
+    
+        
     
     
     
 def preprocess_to_rag():
     split_documents = get_chunk()
 
+    if not split_documents:
+        print("Ошибка: не удалось извлечь документы. Пустой список.")
+        return None, None 
+    
     embeddings_model = JinaEmbedding(
         api_key=os.getenv('jina_ai_api_key')
     )
 
-    database = FAISS.from_documents(
-        documents=split_documents,
-        embedding=embeddings_model
-    )
+    embeddings = embeddings_model.embed_documents([doc.page_content for doc in split_documents])
+    
+    if not embeddings:
+        print("Ошибка: полученные эмбеддинги пустые.")
+        return None, None  
 
-    retriever = database.as_retriever(k=3, search_type='similarity')
+ 
+    if len(embeddings) == 0 or len(embeddings[0]) == 0:
+        print("Ошибка: эмбеддинги имеют некорректную форму.")
+        return None, None 
+
+    try:
+        
+        database = FAISS.from_documents(
+            documents=split_documents,
+            embedding=embeddings_model
+        )
+    except Exception as e:
+        print(f"Ошибка при создании индекса FAISS: {e}")
+
+    retriever = database.as_retriever(k=1, search_type='similarity')
 
     giga_api_key = os.getenv('GigaChat_API_key')
 
@@ -80,11 +110,6 @@ def create_llm_chain():
 
     Контекст: {context}
 
-
-    Чат История: {chat_history}
-
-
-
     Вопрос: {query}
     """
 
@@ -97,8 +122,6 @@ def create_llm_chain():
 
     return llm_chain
     
-
-
 
 
 

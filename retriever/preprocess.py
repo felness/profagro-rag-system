@@ -32,7 +32,7 @@ def get_text_from_pdf():
 
 
 def get_chunk():
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=50)
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=50)
     
     texts = get_text_from_pdf()
     

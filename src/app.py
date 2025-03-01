@@ -27,16 +27,13 @@ st.title('assistant')
 # get response
 def get_response(query, chat_history):
     
-    limited_history = chat_history[-MAX_HISTORY_LENGTH:]
+    # limited_history = chat_history[-MAX_HISTORY_LENGTH:]
     
     chain = create_llm_chain()
     
-    history_str = "\n".join([f"{msg.role}: {msg.content}" for msg in limited_history])
+    # history_str = "\n".join([f"{msg.__class__.__name__}: {msg.content}" for msg in limited_history])
     
-    return chain.invoke({
-        'query' : query,
-        'chat_history' : limited_history
-    })
+    return chain.invoke(query).content
     
 # conversation
 for message in  st.session_state.chat_history:
