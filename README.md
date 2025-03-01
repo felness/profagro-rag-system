@@ -43,7 +43,6 @@
 
 # Используя Docker
 В корне проекта приложен Docker файл для вашего удобства
-
    ```python
      docker build -t profagro-rag-system .
      docker run -p 8501:8501 --env-file .env profagro-rag-system
