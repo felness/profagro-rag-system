@@ -1,21 +1,18 @@
-   # Используем официальный образ Python в качестве базового образа
-   FROM python:3.12.8-slim
+FROM python:3.12.8-slim
 
-   # Устанавливаем зависимости для системы
-   RUN apt-get update && \
-       apt-get install -y --no-install-recommends \
-       build-essential \
-       && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
 
-   # Устанавливаем рабочую директорию внутри контейнера
-   WORKDIR /app
+WORKDIR /app
 
-   # Копируем директорию src/ в контейнер
-   COPY src/ /app/
+COPY requirements.txt /app/
+RUN pip install --no-cache-dir -r requirements.txt
 
-   # Устанавливаем Python зависимости
-   RUN pip install --no-cache-dir -r requirements.txt
+COPY src/ /app/
+COPY retriever/ /app/retriever/
 
-   # Указываем команду для запуска приложения
-   CMD ["streamlit", "run", "app.py"]
-   
+EXPOSE 8501
+
+CMD ["streamlit", "run", "app.py"]
