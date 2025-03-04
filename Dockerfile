@@ -12,6 +12,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY src/ /app/
 COPY retriever/ /app/retriever/
+COPY docs/ /app/docs/
 
 EXPOSE 8501
 
