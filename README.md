@@ -38,7 +38,7 @@
  Создайте файл .env в корне проекта и добавьте необходимые API ключи для используемых сервисов:
    ```python
    jina_ai_api_key=your_jina_api_key
-   gigachat_api_key=your_gigachat_api_key
+   GigaChat_API_key=your_gigachat_api_key
 
 
 4. Запуск проекта:
